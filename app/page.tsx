@@ -1,46 +1,29 @@
-import * as net from 'net';
-import { Buffer } from 'buffer';
+import * as Packet from '../lib/packet'
 
 export default function Home() {
+    const packet = Packet.NewPacket(11, 200, 0, "Test");
+
+    (async () => {
+        try {
+            const data: Uint8Array = await Packet.SendPacket(packet);
+            console.log(data.length);
+            data.forEach((x, i) => {
+                console.log(`Byte ${i}: ${x}`);
+            });
+            const recv: Packet.Packet = Packet.FromBytes(data);
+            console.log("Received Version:", recv.version);
+            console.log("Received Command:", recv.command);
+            console.log("Received Status:", recv.status);
+            console.log("Received Id:", recv.id);
+            console.log("Received Data:", recv.data);
+        }
+        catch (error) {
+            console.error('error receiving error: ', error);
+        }
+    })();
+
     return (
         <div>
-            Hello, World!
         </div>
     );
-}
-
-function SendInitRequest() {
-
-    const version = 1;
-    const command = 1; // Init
-
-    const vals = [
-        200, 0, 0
-    ];
-
-    const nums = [
-        Buffer.alloc(2),
-        Buffer.alloc(2),
-        Buffer.alloc(2)]
-        .map((x) => {
-            return new DataView(
-                x.buffer,
-                x.byteOffset,
-                x.byteLength);
-        });
-
-    const zip: Uint16Array[] = (d: DataView[], n: number[]) => d.map((v, i) => v.setUint16(0, n[i], true));
-
-
-
-
-    // const arr: Uint8Array = new Uint8Array(data);
-
-
-
-    const client = new net.Socket();
-    client.connect(8000, 'localhost', () => {
-        console.log("Connected to server");
-        client.write(arr);
-    });
 }
