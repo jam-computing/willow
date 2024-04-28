@@ -16,7 +16,7 @@ type Packet struct {
 	data    string
 }
 
-func GoodPacket() Packet {
+func NewPacket() Packet {
 	packet := Packet{}
 
 	packet.version = PROTOCOL_VERSION
@@ -41,7 +41,7 @@ func BadPacket() Packet {
 }
 
 func Make(bytes []byte) Packet {
-	packet := GoodPacket()
+	packet := NewPacket()
 
 	packet.version = bytes[0]
 	packet.command = bytes[1]
