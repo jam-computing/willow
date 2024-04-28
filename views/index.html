@@ -2,13 +2,27 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Willow</title>
-    </head>
 
-    <body>
-        Title {{ .Title }}
-    </body>
+<head>
+    <title>Willow</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+</head>
+
+<body>
+    {{ template "display-cards" . }}
+</body>
+
 </html>
 {{ end }}
 
+{{ block "display-cards" . }}
+<div style="display: flex; flex-direction: column">
+    {{ range .Cards }}
+    <form hx-post="/play" hx-target="body">
+        Title: <input type="text" name="title" value="{{ .Title }}" />
+        Artist: <input type="text" name="artist" value="{{ .Artist }}" />
+        <button type="submit">Play!</button>
+    </form>
+    {{ end }}
+</div>
+{{ end }}
