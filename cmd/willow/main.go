@@ -1,12 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
 
-import "github.com/jam-computing/willow/pkg/tcp"
+	"github.com/jam-computing/willow/pkg/tcp"
+)
 
 func main() {
-    p := tcp.NewPacket()
+    packet := tcp.NewPacket()
+    packet.command = 11
+    packet = packet.SendRecv();
 
-    fmt.Println("Hello")
-    fmt.Println(p.Version)
 }
