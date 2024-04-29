@@ -23,7 +23,7 @@ func NewPacket() Packet {
 	packet.Command = 1
 	packet.Status = 200
 	packet.Id = 0
-	packet.Data = ""
+	packet.Data = "Hello"
 
 	return packet
 }
@@ -48,13 +48,8 @@ func Make(bytes []byte) Packet {
 
 	packet.Status = binary.LittleEndian.Uint16([]byte{bytes[2], bytes[3]})
 	packet.Id = binary.LittleEndian.Uint16([]byte{bytes[4], bytes[5]})
-	length := binary.LittleEndian.Uint16([]byte{bytes[6], bytes[7]})
-
-	if length > 0 {
-		packet.Data = string(bytes[8 : 8+length])
-	} else {
-		packet.Data = ""
-	}
+	_ = binary.LittleEndian.Uint16([]byte{bytes[6], bytes[7]}) // Length
+    packet.Data = string(bytes[8:])
 
 	return packet
 }

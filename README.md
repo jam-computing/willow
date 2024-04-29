@@ -16,3 +16,8 @@ Built with go and echo.
 * Send play request to evergreen
 * Display playing animation
 * Refactor data etc to pkg prolly
+
+* Add error handling
+* When playing animation, show on server
+
+* Query DB for list of animations

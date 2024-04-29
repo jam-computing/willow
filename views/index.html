@@ -10,6 +10,7 @@
 
 <body>
     {{ template "display-cards" . }}
+    <div id="error"></div>
 </body>
 
 </html>
@@ -18,14 +19,20 @@
 {{ block "display-cards" . }}
 <div style="display: flex; flex-direction: column">
     {{ range .Cards }}
-    <form hx-post="/card" hx-target="body">
-    Title: {{ .Title }} <br>
-    Artist: {{ .Artist }} <br>
-    <input type="hidden" name="title" value="{{ .Title }}" />
-    <input type="hidden" name="artist" value="{{ .Artist }}" />
-    <button hx-post="/play" hx-target="body">Play this animation!</button>
+    <form hx-post="/play" hx-target="error">
+        Title: {{ .Title }} <br>
+        Artist: {{ .Artist }} <br>
+        <input type="hidden" name="title" value="{{ .Title }}" />
+        <input type="hidden" name="artist" value="{{ .Artist }}" />
+        <button hx-post="/play" hx-target="#error">Play this animation!</button>
     </form>
     <hr>
     {{ end }}
+</div>
+{{ end }}
+
+{{ block "error" . }}
+<div>
+    {{ .Error }}
 </div>
 {{ end }}
