@@ -56,22 +56,17 @@ func main() {
 	})
 
     e.POST("/play", func(c echo.Context) error {
-        title := c.FormValue("title")
-        artist := c.FormValue("artist")
-
-        fmt.Println(title)
-        fmt.Println(artist)
+        _ = c.FormValue("title")
+        _ = c.FormValue("artist")
 
         p := protocol.NewPacket()
         p.Status = 200
-        p.Command = 11
+        p.Command = 2
         recv := p.SendRecv()
 
         fmt.Println(recv.Status)
 
 		return c.Render(200, "index", data)
-
-
 	})
 
 	fmt.Println("Listening on http://localhost:3000")
