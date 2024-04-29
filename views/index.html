@@ -18,11 +18,14 @@
 {{ block "display-cards" . }}
 <div style="display: flex; flex-direction: column">
     {{ range .Cards }}
-    <form hx-post="/play" hx-target="body">
-        Title: <input type="text" name="title" value="{{ .Title }}" />
-        Artist: <input type="text" name="artist" value="{{ .Artist }}" />
-        <button type="submit">Play!</button>
+    <form hx-post="/card" hx-target="body">
+    Title: {{ .Title }} <br>
+    Artist: {{ .Artist }} <br>
+    <input type="hidden" name="title" value="{{ .Title }}" />
+    <input type="hidden" name="artist" value="{{ .Artist }}" />
+    <button hx-post="/play" hx-target="body">Play this animation!</button>
     </form>
+    <hr>
     {{ end }}
 </div>
 {{ end }}

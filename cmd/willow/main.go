@@ -31,8 +31,8 @@ type Data struct {
 func newData() Data {
     return Data{
         Cards: []Card{
-            newCard("Title One", "John Lennon"),
-            newCard("Title Two", "April Ludgate"),
+            newCard("Title One", "Author One"),
+            newCard("Title Two", "Author Two"),
         },
     }
 }
@@ -59,9 +59,19 @@ func main() {
         title := c.FormValue("title")
         artist := c.FormValue("artist")
 
-        data.Cards = append(data.Cards, newCard(title, artist))
+        fmt.Println(title)
+        fmt.Println(artist)
+
+        p := protocol.NewPacket()
+        p.Status = 200
+        p.Command = 11
+        recv := p.SendRecv()
+
+        fmt.Println(recv.Status)
 
 		return c.Render(200, "index", data)
+
+
 	})
 
 	fmt.Println("Listening on http://localhost:3000")
