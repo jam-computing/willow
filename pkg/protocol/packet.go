@@ -13,6 +13,7 @@ type Packet struct {
 	Command byte
 	Status  uint16
 	Id      uint16
+	Len     uint16
 	Data    string
 }
 
@@ -23,6 +24,7 @@ func NewPacket() Packet {
 	packet.Command = 1
 	packet.Status = 200
 	packet.Id = 0
+	packet.Len = 5
 	packet.Data = "Hello"
 
 	return packet
@@ -35,6 +37,7 @@ func BadPacket() Packet {
 	packet.Command = 0
 	packet.Status = 500
 	packet.Id = 0
+    packet.Len = 0
 	packet.Data = ""
 
 	return packet
@@ -48,8 +51,8 @@ func Make(bytes []byte) Packet {
 
 	packet.Status = binary.LittleEndian.Uint16([]byte{bytes[2], bytes[3]})
 	packet.Id = binary.LittleEndian.Uint16([]byte{bytes[4], bytes[5]})
-	_ = binary.LittleEndian.Uint16([]byte{bytes[6], bytes[7]}) // Length
-    packet.Data = string(bytes[8:])
+	packet.Len = binary.LittleEndian.Uint16([]byte{bytes[6], bytes[7]}) // Length
+	packet.Data = string(bytes[8:])
 
 	return packet
 }

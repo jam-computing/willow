@@ -12,12 +12,12 @@ Built with go and echo.
 <hr>
 
 ## TODO
-* Fix artist not rendering
-* Send play request to evergreen
-* Display playing animation
-* Refactor data etc to pkg prolly
+- [x] Fix artist not rendering
+- [x] Send play request to evergreen
+- [x] Display playing animation
+- [ ] Refactor data etc to pkg prolly
 
-* Add error handling
-* When playing animation, show on server
+- [ ] Add error handling
+- [ ] When playing animation, show on server
 
-* Query DB for list of animations
+- [x] Query DB for list of animations
