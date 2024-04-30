@@ -15,9 +15,9 @@ Built with go and echo.
 - [x] Fix artist not rendering
 - [x] Send play request to evergreen
 - [x] Display playing animation
-- [ ] Refactor data etc to pkg prolly
+- [x] Refactor data etc to pkg prolly
 
 - [ ] Add error handling
-- [ ] When playing animation, show on server
+- [x] When playing animation, show on bottom
 
 - [x] Query DB for list of animations

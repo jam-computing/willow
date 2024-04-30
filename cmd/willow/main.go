@@ -5,50 +5,14 @@ import (
 	"fmt"
 
 	"github.com/jam-computing/willow/pkg"
+	"github.com/jam-computing/willow/pkg/webstate"
 	"github.com/jam-computing/willow/pkg/player"
 	"github.com/jam-computing/willow/pkg/protocol"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-type Card struct {
-	Title  string
-	Artist string
-}
 
-func newCard(name, artist string) Card {
-	return Card{
-		Title:  name,
-		Artist: artist,
-	}
-}
-
-type Cards = []Card
-
-type Data struct {
-	Cards Cards
-    Title string
-    Artist string
-}
-
-func newData() Data {
-	return Data{
-        Title: "",
-        Artist: "",
-    }
-}
-
-type PlaybarData struct {
-	Title  string
-	Artist string
-}
-
-func newPlaybarData(title, artist string) *PlaybarData {
-    return &PlaybarData{
-        Title: title,
-        Artist: artist,
-    }
-}
 
 func main() {
 	e := echo.New()
@@ -56,7 +20,7 @@ func main() {
 
 	e.Renderer = pkg.NewTemplate()
 
-	data := newData()
+	data := webstate.NewData()
 
 	e.GET("/", func(c echo.Context) error {
 		p := protocol.NewPacket()
@@ -74,10 +38,10 @@ func main() {
 			return c.Render(200, "index", data)
 		}
 
-		cardData := newData()
+		cardData := webstate.NewData()
 
 		for _, a := range animations {
-			cardData.Cards = append(cardData.Cards, newCard(a.Title, a.Artist))
+			cardData.Cards = append(cardData.Cards, webstate.NewCard(a.Title, a.Artist))
 		}
 
 		return c.Render(200, "index", cardData)
@@ -94,7 +58,7 @@ func main() {
 		recv := p.SendRecv()
 
 		if len(recv.Data) > 0 {
-			playbarData := newPlaybarData(title, artist)
+			playbarData := webstate.NewPlaybarData(title, artist)
 			return c.Render(200, "player", playbarData)
 		}
 
@@ -103,8 +67,8 @@ func main() {
 
 	fmt.Println("Listening on http://localhost:3000")
 
-	e.File("/card.css", "../../css/card.css")
-	e.File("/materialize.css", "../../css/materialize.css")
-	e.File("/materialize.js", "../../js/materialize.js")
+	e.File("/card.css", "../../views/css/card.css")
+	e.File("/materialize.css", "../../views/css/materialize.css")
+	e.File("/materialize.js", "../../views/js/materialize.js")
 	e.Logger.Fatal(e.Start(":3000"))
 }
