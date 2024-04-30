@@ -1,0 +1,118 @@
+{{ block "index" . }}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Willow</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+    <link rel="stylesheet" href="card.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="materialize.css" />
+    <style>
+        .fixed-bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .card-panel {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            padding: 10px;
+        }
+
+        .title-artist {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            /* Ensure it takes the full width of the card-panel */
+        }
+
+        .title-artist span,
+        .title-artist p {
+            margin: 0;
+            font-size: 1.5em;
+            /* Adjust font size as needed */
+        }
+    </style>
+</head>
+
+
+<body>
+    <!---
+    <nav>
+        <div class="nav-wrapper">
+            <form>
+                <div class="input-field green">
+                    <input class="green" id="search" type="search" required>
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                </div>
+            </form>
+        </div>
+    </nav>
+    --->
+
+
+    {{ template "display-cards" . }}
+
+    <div id="error"></div>
+
+
+    <div id="playbar">
+        {{ template "player" . }}
+    </div>
+
+
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+</body>
+
+</html>
+{{ end }}
+
+{{ block "display-cards" . }}
+<div style="display: flex; flex-direction: row">
+    {{ range .Cards }}
+    <div class="playlist-card">
+        <form hx-post="/play" hx-target="error">
+            <div class="title">{{ .Title }} </div>
+            <p class="artist">{{ .Artist }} </p>
+            <input type="hidden" name="title" value="{{ .Title }}" />
+            <input type="hidden" name="artist" value="{{ .Artist }}" />
+            <button class="btn waves-effect waves-light green" type="submit" name="action" hx-post="/play"
+                hx-target="#playbar">Play
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ block "error" . }}
+<div>
+    {{ .Error }}
+</div>
+{{ end }}
+
+
+{{ block "player" . }}
+
+<div class="fixed-bottom-bar">
+    <div class="container">
+        <div class="card-panel green">
+            <div class="title-artist">
+                <span class="white-text">{{ .Title }} -- {{ .Artist }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ end }}
